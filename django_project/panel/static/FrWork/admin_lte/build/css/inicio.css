@@ -1,0 +1,96 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+
+    /* Fondo degradado */
+
+    background-size: cover;
+    overflow: hidden;
+}
+.card {
+    border-radius: 30px; /* Bordes más ovalados */
+    box-shadow: 0 30px 25px rgba(0, 0, 0, 0.2); /* Sombra elegante */
+    width: 500px; /* Ajusta el ancho */
+    min-height: 70vh; /* Largo mínimo relativo a la ventana */
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.95); /* Fondo blanco con transparencia */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+}
+
+/* Efecto al pasar el mouse */
+.card:hover {
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+    box-shadow: 0 40px 30px rgba(0, 0, 0, 0.3); /* Sombra más intensa */
+}
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrar contenido verticalmente */
+}
+
+.card-header {
+    background: #2F455C; /* Fondo del encabezado */
+    color: white; /* Texto blanco */
+    border-radius: 20px 30px 0 0; /* Bordes superiores ovalados */
+    text-align: center;
+    padding: 20px; /* Espaciado interno */
+
+}
+
+.card-footer {
+    background: #F7F9FC; /* Fondo claro para el pie */
+    border-radius: 0 0 30px 30px; /* Bordes inferiores ovalados */
+    text-align: center;
+    padding: 10px; /* Espaciado interno */
+}
+
+.btn-primary {
+    background: #3A4A69; /* Color del botón */
+    border: none;
+    border-radius: 25px;
+    color: white; /* Texto blanco */
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    padding: 10px 20px; /* Espaciado interno */
+}
+
+.btn-primary:hover {
+    background: #2C3B55; /* Color más oscuro para hover */
+}
+
+.password-container .btn {
+    border-radius: 25px;
+    padding: 5px;
+}
+
+.toggle-password {
+    cursor: pointer;
+}
+/* Estilo base para los inputs */
+.input-group .form-control {
+    border: 2px solid #ccc; /* Borde inicial */
+    border-radius: 10px; /* Bordes redondeados */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Transición suave */
+}
+
+/* Cambios al pasar el mouse */
+.input-group .form-control:hover {
+    border-color: #3A4A69; /* Cambiar el color del borde */
+    transform: scale(1.02); /* Aumenta ligeramente el tamaño */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Cambios al enfocar (clic dentro del campo) */
+.input-group .form-control:focus {
+    border-color: #2F455C; /* Color del borde en foco */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+    transform: scale(1.03); /* Aumenta ligeramente el tamaño */
+    outline: none; /* Elimina el borde azul por defecto */
+}

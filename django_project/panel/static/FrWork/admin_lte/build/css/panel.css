@@ -1,0 +1,53 @@
+/* Estilo general del contenedor */
+.container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Estilo de las tarjetas */
+.card {
+    border-radius: 15px; /* Bordes más redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef); /* Fondo sutil */
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+}
+
+/* Hover en las tarjetas */
+.card:hover {
+    transform: translateY(-5px); /* Eleva la tarjeta */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Aumenta la sombra */
+}
+
+/* Íconos de las tarjetas */
+.card i {
+    color: #007bff; /* Azul principal */
+    font-size: 3.5rem; /* Íconos más grandes */
+    margin-bottom: 10px;
+    transition: color 0.2s ease;
+}
+
+/* Cambia el color del ícono al pasar el cursor */
+.card:hover i {
+    color: #0056b3;
+}
+
+/* Títulos */
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #495057;
+}
+
+/* Botones */
+.card .btn {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.card .btn:hover {
+    transform: scale(1.05);
+}

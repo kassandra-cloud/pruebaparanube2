@@ -1,0 +1,77 @@
+{% extends "../index_master.html" %}
+{% load static %}
+{% block content %}
+<div class="right_col" role="main">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h2>Editar Grupo: {{ grupo.name }}</h2>
+                        
+                        {% if messages %}
+                        <div class="alert alert-info">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'editar_grupo' grupo.id %}">
+                            {% csrf_token %}
+
+                            <!-- Nombre del Grupo -->
+                            <div class="form-group mb-4">
+                                <label for="nombre" class="h6">Nombre del Grupo</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control" value="{{ grupo.name }}" required>
+                            </div>
+
+                            <!-- Permisos Disponibles -->
+                            <div class="form-group mb-4">
+                                <label class="h6">Permisos Disponibles</label>
+
+                                <!-- Checkbox para seleccionar todos los permisos -->
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="selectAll" onclick="toggleAllPermissions(this)">
+                                    <label class="form-check-label" for="selectAll">
+                                        Seleccionar todos
+                                    </label>
+                                </div>
+
+                                <div class="row">
+                                    {% for permiso in permisos %}
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check">
+                                            <input 
+                                                class="form-check-input permiso-checkbox" 
+                                                type="checkbox" 
+                                                name="permisos" 
+                                                value="{{ permiso.id }}" 
+                                                id="permiso_{{ permiso.id }}"
+                                                {% if permiso in permisos_grupo %}checked{% endif %}
+                                            >
+                                            <label class="form-check-label" for="permiso_{{ permiso.id }}">
+                                                {{ permiso.name }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Botón de acción -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Guardar Cambios</button>
+                                <a href="{% url 'listar_grupos' %}" class="btn btn-secondary btn-lg">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static '/FrWork/admin_lte/build/js/crud_grupo.js' %}"></script>
+{% endblock %}

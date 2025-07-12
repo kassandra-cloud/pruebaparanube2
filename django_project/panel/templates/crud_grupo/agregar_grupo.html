@@ -1,0 +1,98 @@
+{% extends "../index_master.html" %}
+{% load static %}
+{% block content %}
+<div class="right_col" role="main">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg border-0 rounded">
+                    <div class="card-header bg-primary text-white text-center rounded-top">
+                        <h2><i class="fas fa-users"></i> Agregar Grupo</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Mostrar mensajes -->
+                        {% if messages %}
+                        <div class="alert alert-info">
+                            {% for message in messages %}
+                                <p><i class="fas fa-info-circle"></i> {{ message }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <!-- Formulario -->
+                        <form method="POST" action="{% url 'agregar_grupo' %}" class="needs-validation" novalidate>
+                            {% csrf_token %}
+
+                            <!-- Nombre del Grupo -->
+                            <div class="form-group mb-4">
+                                <label for="nombre" class="h6"><i class="fas fa-tag"></i> Nombre del Grupo</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control shadow-sm" placeholder="Ingrese el nombre del grupo" required>
+                                <div class="invalid-feedback">Este campo es obligatorio.</div>
+                            </div>
+
+                            <!-- Permisos Disponibles -->
+                            <div class="form-group mb-4">
+                                <label class="h6"><i class="fas fa-unlock-alt"></i> Permisos Disponibles</label>
+
+                                <!-- Seleccionar todos -->
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="selectAll" onclick="toggleAllPermissions(this)">
+                                    <label class="form-check-label" for="selectAll">
+                                        <strong>Seleccionar todos</strong>
+                                    </label>
+                                </div>
+
+                                <div class="row">
+                                    {% for permiso in permisos %}
+                                    <div class="col-md-6 col-lg-4 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input permiso-checkbox" type="checkbox" name="permisos" value="{{ permiso.id }}" id="permiso_{{ permiso.id }}">
+                                            <label class="form-check-label" for="permiso_{{ permiso.id }}">
+                                                {{ permiso.name }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Botón de acción -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                                    <i class="fas fa-save"></i> Guardar Grupo y Permisos
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static '/FrWork/admin_lte/build/js/crud_grupo.js' %}"></script>
+<script>
+    // Validación de formulario
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    // Seleccionar todos los permisos
+    function toggleAllPermissions(source) {
+        const checkboxes = document.querySelectorAll('.permiso-checkbox');
+        checkboxes.forEach(checkbox => checkbox.checked = source.checked);
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends '../index_master.html' %}
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="container">
+        <h1 class="mb-4">Lista de Usuarios</h1>
+
+        <!-- Mostrar mensajes de éxito o error -->
+        {% if messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+
+        <!-- Filtros -->
+        <form method="GET" action="{% url 'listar' %}" class="mb-4">
+            <div class="row g-3">
+                <!-- Ordenar por columna -->
+                <div class="col-md-6">
+                    <label for="orden" class="form-label">Ordenar por:</label>
+                    <select id="orden" name="orden" class="form-select">
+                        <option value="nombre_asc" {% if orden == 'nombre_asc' %}selected{% endif %}>Nombre (A-Z)</option>
+                        <option value="nombre_desc" {% if orden == 'nombre_desc' %}selected{% endif %}>Nombre (Z-A)</option>
+                        <option value="apellido_asc" {% if orden == 'apellido_asc' %}selected{% endif %}>Apellido (A-Z)</option>
+                        <option value="apellido_desc" {% if orden == 'apellido_desc' %}selected{% endif %}>Apellido (Z-A)</option>
+                        <option value="fecha_registro_asc" {% if orden == 'fecha_registro_asc' %}selected{% endif %}>Fecha de Registro (Antiguo a Reciente)</option>
+                        <option value="fecha_registro_desc" {% if orden == 'fecha_registro_desc' %}selected{% endif %}>Fecha de Registro (Reciente a Antiguo)</option>
+                    </select>
+                </div>
+
+                <!-- Botón de filtro -->
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fa fa-filter"></i> Aplicar Filtro
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Tabla de usuarios -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">RUT</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Género</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Contraseña</th>
+                        <th scope="col">Grupos</th>
+                        <th scope="col">Fecha de Nacimiento</th>
+                        <th scope="col">Fecha de Registro</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in usuarios %}
+                    <tr>
+                        <td>{{ u.id }}</td>
+                        <td>{{ u.rut }}</td>
+                        <td>{{ u.nombre }}</td>
+                        <td>{{ u.apellido }}</td>
+                        <td>{{ u.genero }}</td>
+                        <td>{{ u.correo }}</td>
+                        <td>{{ u.telefono }}</td>
+                        <td>
+                            <span class="text-muted">No visible</span>
+                        </td>
+                        <td>{{ u.grupos.all|join:", " }}</td>
+                        <td>{{ u.f_nac|date:"j F Y" }}</td>
+                        <td>{{ u.f_registro|date:"j F Y, H:i" }}</td>
+                        <td>
+                            <a href="{% url 'actualizar' %}?id={{ u.id }}" class="btn btn-warning btn-sm">
+                                <i class="fa fa-edit"></i> Editar
+                            </a>
+                            <a href="{% url 'eliminar' u.id %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este usuario?');">
+                                <i class="fa fa-trash"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

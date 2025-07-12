@@ -1,0 +1,75 @@
+{% extends '../index_master.html' %}
+{% load static %}
+{% block content %}
+<div class="right_col" role="main">
+    <h1 class="text-center my-4">Monitoreo de Flujo de Pacientes</h1>
+
+    <!-- Buscador -->
+    <div class="d-flex justify-content-between mb-3">
+        <input type="text" class="form-control w-25" id="buscador-pacientes" placeholder="Buscar paciente...">
+    </div>
+
+    <!-- Tabla de Pacientes -->
+    <div class="table-responsive mt-3">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Estado</th>
+                    <th>Hora de Ingreso</th>
+                    <th>Última Actualización</th>
+                </tr>
+            </thead>
+            <tbody id="pacientes-table">
+                <!-- Datos ficticios -->
+                <tr>
+                    <td>Juan</td>
+                    <td>Pérez</td>
+                    <td>34</td>
+                    <td><span class="badge bg-success">Estable</span></td>
+                    <td>2024-12-09 08:30</td>
+                    <td>2024-12-09 09:00</td>
+                </tr>
+                <tr>
+                    <td>María</td>
+                    <td>González</td>
+                    <td>29</td>
+                    <td><span class="badge bg-danger">Crítico</span></td>
+                    <td>2024-12-09 07:15</td>
+                    <td>2024-12-09 08:45</td>
+                </tr>
+                <tr>
+                    <td>Pedro</td>
+                    <td>Ramírez</td>
+                    <td>45</td>
+                    <td><span class="badge bg-success">Estable</span></td>
+                    <td>2024-12-09 06:00</td>
+                    <td>2024-12-09 08:00</td>
+                </tr>
+                <tr>
+                    <td>Sofía</td>
+                    <td>Lopez</td>
+                    <td>32</td>
+                    <td><span class="badge bg-warning text-dark">Observación</span></td>
+                    <td>2024-12-09 09:00</td>
+                    <td>2024-12-09 09:30</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- JavaScript para funcionalidades -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Función para el buscador
+    $('#buscador-pacientes').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('#pacientes-table tr').filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'index_master.html' %}
+{% load static %}
+{% block content %}
+    <!-- page content -->
+    <div class="right_col" role="main">
+        <h1>Panel de Administración</h1>
+        <!-- Enlace de Cerrar Sesión -->
+        
+        <div class="container mt-4">
+            <div class="row justify-content-center align-items-center g-4">
+                <!-- Tarjeta: Listar Usuarios -->
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fa fa-list fa-3x mb-3"></i>
+                            <h4 class="card-title">Listar Usuarios</h4>
+                            <a href="{% url 'listar' %}" class="btn btn-primary">Ir a Listado</a>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Tarjeta: Agregar Usuario -->
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="bi bi-person-plus-fill fa-3x mb-3"></i>
+                            <h4 class="card-title">Agregar Usuario</h4>
+                            <a href="{% url 'agregar' %}" class="btn btn-success">Agregar Nuevo Usuario</a>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Tarjeta: Gestionar Permisos -->
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fa fa-lock fa-3x mb-3"></i>
+                            <h4 class="card-title">Gestionar Permisos</h4>
+                            <a href="{% url 'agregar_grupo' %}" class="btn btn-warning">Configurar Permisos de Grupo</a>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Tarjeta: Usuarios Inactivos -->
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fa fa-user-slash fa-3x mb-3"></i>
+                            <h4 class="card-title">Usuarios Inactivos</h4>
+                            <a href="{% url 'listar_usuarios_inactivos' %}" class="btn btn-secondary">Ver Usuarios Inactivos</a>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Tarjeta: Flujo de Pacientes -->
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fa fa-users fa-3x mb-3"></i>
+                            <h4 class="card-title">Flujo de Pacientes</h4>
+                            <a href="{% url 'monitoreo' %}" class="btn btn-info">Ver Flujo</a>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Tarjeta: Monitoreo del Desempeño -->
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fa fa-chart-line fa-3x mb-3"></i>
+                            <h4 class="card-title">Monitoreo del Desempeño</h4>
+                            <a href="{% url 'monitoreo_desempeno' %}" class="btn btn-dark">Ir al Monitoreo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- CSS agregado directamente -->
+<style>
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border: none;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .card i {
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+    .card .btn {
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    .row.g-4 {
+        gap: 1.5rem;
+    }
+</style>
+
+{% endblock %}
+

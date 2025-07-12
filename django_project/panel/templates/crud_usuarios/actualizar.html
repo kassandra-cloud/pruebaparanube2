@@ -1,0 +1,184 @@
+{% extends '../index_master.html' %}
+{% load static %}
+{% block content %}
+<div class="right_col" role="main">
+    <h1>Actualizar usuario</h1>
+    
+    {% if usuario %}
+    <form action="{% url 'actualizar' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ usuario.id }}">
+
+        <!-- Campo para el RUT -->
+        <div class="form-group row">
+            <label for="rut_numeros" class="col-4 col-form-label">RUT</label>
+            <div class="col-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-id-card"></i>
+                        </div>
+                    </div>
+                    <input id="rut_numeros" name="rut_numeros" type="text" class="form-control" placeholder="12345678"
+                           required maxlength="8" pattern="[0-9]{8}" 
+                           value="{{ rut_numeros|default_if_none:'' }}" 
+                           title="El RUT debe tener exactamente 8 números." readonly>
+                    <div class="input-group-append">
+                        <span class="input-group-text">-</span>
+                    </div>
+                    <input id="rut_dv" name="rut_dv" type="text" class="form-control" placeholder="DV" maxlength="1" 
+                           readonly style="width: 50px;" 
+                           value="{{ rut_dv|default_if_none:'' }}">
+                </div>
+            </div>
+        </div>
+
+        <!-- Campo para el Nombre -->
+        <div class="form-group row">
+            <label for="nombre" class="col-4 col-form-label">Nombre</label>
+            <div class="col-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-address-card"></i>
+                        </div>
+                    </div>
+                    <input id="nombre" name="nombre" type="text" required="required" class="form-control"
+                           pattern="[A-Za-zÀ-ÿ\s]+" 
+                           value="{{ usuario.nombre|default_if_none:'' }}" 
+                           title="El nombre solo puede contener letras y espacios.">
+                </div>
+            </div>
+        </div>
+
+        <!-- Campo para el Apellido -->
+        <div class="form-group row">
+            <label for="apellido" class="col-4 col-form-label">Apellido</label>
+            <div class="col-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-address-card-o"></i>
+                        </div>
+                    </div>
+                    <input id="apellido" name="apellido" type="text" required="required" class="form-control"
+                           pattern="[A-Za-zÀ-ÿ\s]+" 
+                           value="{{ usuario.apellido|default_if_none:'' }}" 
+                           title="El apellido solo puede contener letras y espacios.">
+                </div>
+            </div>
+        </div>
+
+        <!-- Campo para el Correo -->
+        <div class="form-group row">
+            <label for="correo" class="col-4 col-form-label">Correo</label>
+            <div class="col-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-inbox"></i>
+                        </div>
+                    </div>
+                    <input id="correo" name="correo" type="email" class="form-control" 
+                           value="{{ usuario.correo|default_if_none:'' }}">
+                </div>
+            </div>
+        </div>
+
+     <!-- Campo para el Teléfono -->
+        <div class="form-group row">
+            <label for="telefono" class="col-4 col-form-label">Teléfono</label>
+            <div class="col-8">
+                <div class="input-group">
+                    <!-- Prefijo fijo para el código de país -->
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">+56 9</div>
+                    </div>
+                    <!-- Campo para ingresar el resto del número -->
+                    <input id="telefono" name="telefono" type="text" required="required" class="form-control"
+                        pattern="[0-9]{8}" maxlength="8"
+                        title="El número debe contener exactamente 8 dígitos adicionales al prefijo."
+                        placeholder="Ingrese 8 dígitos"
+                        value="{{ telefono|default_if_none:'' }}"> <!-- Muestra los últimos 8 dígitos sin el prefijo -->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Campo para la Fecha de Nacimiento -->
+        <div class="form-group row">
+            <label for="f_nac" class="col-4 col-form-label">Fecha de Nacimiento</label>
+            <div class="col-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    </div>
+                    <input id="f_nac" name="f_nac" type="date" required="required" class="form-control" 
+                           value="{{ usuario.f_nac|date:'Y-m-d' }}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="genero" class="col-md-4 col-form-label">Género</label>
+            <div class="col-md-8">
+                <select name="genero" id="genero" class="form-control custom-select" >
+                    <option value="M" {% if usuario and usuario.genero == 'M' %}selected{% endif %}>Masculino</option>
+                    <option value="F" {% if usuario and usuario.genero == 'F' %}selected{% endif %}>Femenino</option>
+                    <option value="O" {% if usuario and usuario.genero == 'O' %}selected{% endif %}>Otro</option>
+                </select>
+            </div>
+        </div>
+        <!-- Campo para seleccionar Grupos -->
+        <div class="form-group row">
+            <label for="grupos" class="col-4 col-form-label">Grupos</label>
+            <div class="col-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-users"></i>
+                        </div>
+                    </div>
+                    <select id="grupos" name="grupos" class="form-control selectpicker" multiple data-live-search="true">
+                        {% for grupo in grupos %}
+                            <option value="{{ grupo.id }}" {% if grupo.id in selected_grupos %}selected{% endif %}>
+                                {{ grupo.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor para mostrar permisos -->
+        <div id="permisos-grupo" class="mt-3" style="display: none;">
+            <h5 class="mb-3">Permisos del Grupo:</h5>
+            <!-- Lista de permisos con un contenedor limitado para diseño más limpio -->
+            <ul id="lista-permisos" class="list-group" style="max-height: 150px; overflow-y: auto;">
+                <!-- Los permisos se añadirán dinámicamente aquí -->
+            </ul>
+            <!-- Botón para ver más permisos -->
+            <div class="text-center mt-2">
+                <button id="ver-mas" type="button" class="btn btn-link text-primary" style="display: none;">Ver más</button>
+        </div>
+</div>
+
+        <!-- Botón de Actualizar -->
+        <div class="form-group row">
+            <div class="offset-4 col-8">
+                <button name="submit" type="submit" class="btn btn-primary">
+                    <i class="fa fa-user-plus"></i> Actualizar Usuario
+                </button>
+            </div>
+        </div>
+    </form>
+    {% else %}
+    <p class="text-muted">Selecciona un usuario para editar sus datos.</p>
+    {% endif %}
+</div>
+
+<!-- Importar JavaScript para el cálculo del DV -->
+<script src="{% static '/FrWork/admin_lte/build/js/verificador.js' %}"></script>
+<script src="{% static '/FrWork/admin_lte/build/js/crud_usuario.js' %}"></script>
+{% endblock %}

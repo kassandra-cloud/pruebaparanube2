@@ -1,0 +1,64 @@
+{% extends "../index_master.html" %}
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="container-fluid">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white text-center">
+                <h2><i class="fas fa-users"></i> Lista de Grupos</h2>
+            </div>
+            <div class="card-body">
+                <!-- Mostrar mensajes -->
+                {% if messages %}
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    {% for message in messages %}
+                    <p><i class="fas fa-info-circle"></i> {{ message }}</p>
+                    {% endfor %}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+
+                <!-- Tabla de grupos -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre del Grupo</th>
+                                <th scope="col">Permisos</th>
+                                <th scope="col" class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for grupo in grupos %}
+                            <tr>
+                                <th scope="row">{{ grupo.id }}</th>
+                                <td>{{ grupo.name }}</td>
+                                <td>
+                                    {% for permiso in grupo.permissions.all %}
+                                    <span class="badge badge-info">{{ permiso.name }}</span>
+                                    {% endfor %}
+                                </td>
+                                <td class="text-center">
+                                    <a href="{% url 'editar_grupo' grupo.id %}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                    <form action="{% url 'eliminar_grupo' grupo.id %}" method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este grupo?');">
+                                            <i class="fas fa-trash"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

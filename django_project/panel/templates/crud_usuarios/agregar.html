@@ -1,0 +1,172 @@
+{% extends '../index_master.html' %}
+{% load static %}
+{% block content %}
+<div class="right_col" role="main">
+    <h1>Agregar usuarios</h1>
+    <!-- Mostrar mensaje de error si existe -->
+
+    {% if error_message %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>¡Atención!</strong> {{ error_message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+   
+    <form action="{% url 'agregar' %}" method="POST">
+        {% csrf_token %}
+        <!-- RUT -->
+        <div class="form-group row">
+            <label for="rut_numeros" class="col-md-4 col-form-label">RUT</label>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-id-card"></i>
+                        </div>
+                    </div>
+                    <input id="rut_numeros" name="rut_numeros" type="text" class="form-control" placeholder="12345678"
+                           required oninput="calcularDV()" maxlength="8" pattern="[0-9]{8}" title="El RUT debe tener exactamente 8 números.">
+                    <div class="input-group-append">
+                        <span class="input-group-text">-</span>
+                    </div>
+                    <input id="rut_dv" name="rut_dv" type="text" class="form-control" placeholder="DV" maxlength="1" readonly style="width: 50px;">
+                </div>
+            </div>
+        </div>
+        <!-- Nombre -->
+        <div class="form-group row">
+            <label for="nombre" class="col-md-4 col-form-label">Nombre</label>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-address-card"></i>
+                        </div>
+                    </div>
+                    <input id="nombre" name="nombre" type="text" required="required" class="form-control"
+                           pattern="[A-Za-zÀ-ÿ\s]+" title="El nombre solo puede contener letras y espacios.">
+                </div>
+            </div>
+        </div>
+        <!-- Apellido -->
+        <div class="form-group row">
+            <label for="apellido" class="col-md-4 col-form-label">Apellido</label>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-address-card-o"></i>
+                        </div>
+                    </div>
+                    <input id="apellido" name="apellido" type="text" required="required" class="form-control"
+                           pattern="[A-Za-zÀ-ÿ\s]+" title="El apellido solo puede contener letras y espacios.">
+                </div>
+            </div>
+        </div>
+        <!-- Correo -->
+        <div class="form-group row">
+            <label for="correo" class="col-md-4 col-form-label">Correo</label>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-inbox"></i>
+                        </div>
+                    </div>
+                    <input id="correo" name="correo" type="email" class="form-control">
+                </div>
+            </div>
+        </div>
+        <!-- Contraseña-->
+        <div class="form-group row">
+            <label for="password" class="col-md-4 col-form-label">Contraseña</label>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input id="password" name="password" type="text" class="form-control" placeholder="Contraseña generada" readonly>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-secondary" onclick="generarPassword()">
+                            <i class="fa fa-refresh"></i> Generar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Teléfono -->
+        <div class="form-group row">
+            <label for="telefono" class="col-md-4 col-form-label">Teléfono</label>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">+56 9</div>
+                    </div>
+                    <input id="telefono" name="telefono" type="text" required="required" class="form-control"
+                           pattern="[0-9]{8}" maxlength="8" title="El número debe contener exactamente 8 dígitos adicionales al prefijo."
+                           placeholder="Ingrese 8 dígitos">
+                </div>
+            </div>
+        </div>
+        <!-- Fecha de nacimiento -->
+        <div class="form-group row">
+            <label for="f_nac" class="col-md-4 col-form-label">Fecha de nacimiento</label>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    </div>
+                    <input id="f_nac" name="f_nac" type="date" required="required" class="form-control">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label for="grupos" class="col-md-4 col-form-label">Género</label>
+            <div class="col-md-8">
+                <select name="genero" id="genero" class="form-control select-dropdown" >
+                    <option value="M" {% if usuario and usuario.genero == 'M' %}selected{% endif %}>Masculino</option>
+                    <option value="F" {% if usuario and usuario.genero == 'F' %}selected{% endif %}>Femenino</option>
+                    <option value="O" {% if usuario and usuario.genero == 'O' %}selected{% endif %}>Otro</option>
+                </select>
+            </div>
+        </div>
+       
+         <!-- Grupo (Menú desplegable) -->
+        <div class="form-group row">
+            <label for="grupos" class="col-md-4 col-form-label">Seleccionar Grupo</label>
+            <div class="col-md-8">
+                <select id="grupos" name="grupos" class="form-control select-dropdown" required>
+                    <option value="">Seleccione un grupo</option>
+                    {% for grupo in grupos %}
+                        <option value="{{ grupo.id }}">{{ grupo.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    
+        <!-- Contenedor para mostrar permisos del grupo -->
+        <div id="permisos-grupo" class="mt-3" style="display: none;">
+            <h5>Permisos del Grupo:</h5>
+            <ul id="lista-permisos" class="list-group" style="max-height: 150px; overflow-y: auto;">
+                <!-- Los permisos se agregarán dinámicamente aquí -->
+            </ul>
+            <div class="text-center mt-2">
+                <button id="ver-mas" type="button" class="btn btn-link text-primary" style="display: none;">Ver más</button>
+            </div>
+        </div>
+        <!-- Botón Agregar -->
+        <div class="form-group row">
+            <div class="offset-md-4 col-md-8">
+                <button name="submit" type="submit" class="btn btn-primary btn-block"><i class="fa fa-user-plus"></i> Agregar Usuario</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="{% static '/FrWork/admin_lte/build/js/verificador.js' %}"></script>
+
+<!-- contraseña -->
+<script src="{% static '/FrWork/admin_lte/build/js/crud_usuario.js' %}"></script>
+
+{% endblock %}
+<script src="{% static '/FrWork/admin_lte/build/css/agregar.css' %}"></script>
